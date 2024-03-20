@@ -3,9 +3,9 @@
 // You may not distribute it in any other way without permission.
 
 /* Code for COMP102 - 2024T1, Assignment 2
- * Name:
- * Username:
- * ID:
+ * Name: Jack Scrivener
+ * Username: scrivejack
+ * ID: 300658748
  */
 
  import ecs100.*;
@@ -74,16 +74,84 @@
      }
 
 
-     public void chineseFlag(){
+     //Custom functions to draw chinese flag bellow 
+
+     //takes degre and returns radian value
+     public double DegToRad(double deg){
+        double rad = deg*Math.PI/180;
+        return rad;
+     }
+
+     public void drawChinaFlag(){
+        UI.clearGraphics();
         double LEFT = UI.askDouble("Left of flag ?");
         double TOP = UI.askDouble("Top of flag ?");
         double Width = UI.askDouble("width of flag ?");
+
+        UI.setColor(Color.red);
+        UI.fillRect(LEFT, TOP, Width, (2f/3f)*Width);
+
+        UI.setColor(Color.yellow);
+        //draws big star
+        drawStar(0.185f*Width,LEFT+ 0.075f*Width,TOP+0.065f*Width,0);
+
+        //draws first star
         
-        chineseFlagDrawStar();
+        drawStar(0.067f*Width,LEFT+ 0.3f*Width,TOP+0.033f*Width,DegToRad(50));
+
+        //draws second star
+        drawStar(0.067f*Width,LEFT+ 0.37f*Width,TOP+0.1f*Width,DegToRad(30));
+
+        //draws third star
+        drawStar(0.067f*Width,LEFT+ 0.37f*Width,TOP+0.2f*Width,DegToRad(0));
+
+        //draws fourth star
+        drawStar(0.067f*Width,LEFT+ 0.3f*Width,TOP+0.267f*Width,DegToRad(45));
+        
+        UI.setColor(Color.black);
+        UI.drawRect(LEFT, TOP, Width, (2f/3f)*Width);
      }
 
-     public void chineseFlagDrawStar(){
 
+
+
+
+     public void drawStar(double width,double left,double top,double rotation){
+
+        //multiplyer lists for drawing a star
+        double x_values[] = new double[10];
+        double y_values[] = new double[10];
+
+        double outer_angles[] = {Math.PI/10f,Math.PI/2f,9f*Math.PI/10f,13f*Math.PI/10f,17f*Math.PI/10f};
+        double inner_angles[] = {3f*Math.PI/10f,7f*Math.PI/10f,11f*Math.PI/10f,3f*Math.PI/2f,19f*Math.PI/10f};
+
+        int points = y_values.length;
+        if(x_values.length != y_values.length){
+            UI.print("oi the lists arnt the same lenth");
+        }else{
+
+            for(int angles =0; angles <9; angles +=2){
+                //outer angles cordinates
+                x_values[angles] = 15.772+(Math.cos(outer_angles[angles/2]+rotation)*15.772);
+                y_values[angles] = 15.772-(Math.sin(outer_angles[angles/2]+rotation)*15.772);
+                //inner angle cordinates
+                x_values[angles+1] = 6.4743+(Math.cos(inner_angles[angles/2]+rotation)*6.4743) + 9.2477;
+                y_values[angles+1] = 6.4743-(Math.sin(inner_angles[angles/2]+rotation)*6.4743)+ 9.2477;
+            }
+
+            UI.println("lenth of x list:"+x_values.length);
+
+            //divides all the values by 30 and multiplys them by the width and adds offsets
+            for(int values = 0; values < x_values.length;values+=1){
+                x_values[values] = (x_values[values]/30f * width + left)+ width* Math.cos(Math.PI/2f);
+                y_values[values] = (y_values[values]/30f * width + top);
+
+                UI.print("x:"+x_values[values]);
+                UI.print("y"+y_values[values] +"\n");
+            }
+
+            UI.fillPolygon(x_values, y_values,points);
+        }
      }
  
      public void setupGUI(){
@@ -92,6 +160,7 @@
          UI.addButton("Fancy Rect", this::doFancyRect );
          // Add a button here to call your method for the challenge part
          UI.addButton("Quit", UI::quit );
+         UI.addButton("China Flag", this::drawChinaFlag);
      }
  
      public static void main(String[] args){

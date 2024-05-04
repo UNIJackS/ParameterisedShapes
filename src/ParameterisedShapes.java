@@ -139,15 +139,15 @@
                 y_values[angles+1] = 6.4743-(Math.sin(inner_angles[angles/2]+rotation)*6.4743)+ 9.2477;
             }
 
-            UI.println("lenth of x list:"+x_values.length);
+            //UI.println("lenth of x list:"+x_values.length);
 
             //divides all the values by 30 and multiplys them by the width and adds offsets
             for(int values = 0; values < x_values.length;values+=1){
                 x_values[values] = (x_values[values]/30f * width + left)+ width* Math.cos(Math.PI/2f);
                 y_values[values] = (y_values[values]/30f * width + top);
 
-                UI.print("x:"+x_values[values]);
-                UI.print("y"+y_values[values] +"\n");
+                //UI.print("x:"+x_values[values]);
+                //UI.print("y"+y_values[values] +"\n");
             }
 
             UI.fillPolygon(x_values, y_values,points);
